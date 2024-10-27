@@ -13,13 +13,14 @@
 
     <main>
         <section class="payment-options">
-            <p>Välj betalningsmetod:</p>
-            <!-- Knapp för mobil -->
-            <a href="swish://payment?recipient=1234567890&amount=299&message=Betalning%20för%20Archwi-Tshirt" class="swish-button">Betala med Swish (Mobil)</a>
-            <!-- QR-kod för dator -->
+            <p>För att slutföra din betalning, välj antingen mobil eller skanna QR-koden:</p>
+            <!-- Swish-knapp med JSON-länk -->
+            <a id="swish-button" href="#" class="cool-button" onclick="openSwish()">Betala med Swish (Mobil)</a>
+            <p>Skanna QR-koden om du betalar från dator:</p>
+
+            <!-- QR-kod -->
             <div id="qr-code">
-                <img src="qr-kod.png" alt="Skanna QR-koden för att betala med Swish">
-                <p>Skanna QR-koden med Swish-appen för att betala från dator</p>
+                <img id="qr-code-img" alt="Skanna QR-koden för att betala med Swish">
             </div>
         </section>
     </main>
@@ -27,5 +28,21 @@
     <footer>
         <p>© 2024 Archwi - All rights reserved</p>
     </footer>
+
+    <script>
+        // Swish länk med JSON-format
+        const recipient = "0739200006"; // Swish-mottagarens nummer
+        const amount = "299"; // Pris i SEK
+        const message = encodeURIComponent("Betalning för Archwi-produkt"); // Meddelande under 40 ord
+
+        function openSwish() {
+            const swishLink = `swish://payment?data={"version":1,"payee":{"value":"${recipient}"},"amount":{"value":${amount}},"message":{"value":"${message}"}}`;
+            document.getElementById("swish-button").href = swishLink;
+        }
+
+        // Generera QR-kod med api.qrserver.com
+        const qrURL = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`swish://payment?data={"version":1,"payee":{"value":"${recipient}"},"amount":{"value":${amount}},"message":{"value":"${message}"}}`)}`;
+        document.getElementById("qr-code-img").src = qrURL;
+    </script>
 </body>
 </html>
