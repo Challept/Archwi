@@ -57,3 +57,24 @@ main {
 .category-card h3 {
     margin-top: 0.5rem;
 }
+
+.cool-button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background-color: #00796b;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    margin: 1rem 0;
+}
+
+.cool-button:hover {
+    background-color: #005a50;
+}
+
+#qr-code {
+    margin-top: 1rem;
+}
