@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archwi - Produkt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Produktdetaljer</h1>
+    </header>
+
+    <main>
+        <section id="product-details" class="product-details"></section>
+    </main>
+
+    <footer>
+        <p>© 2024 Archwi - All rights reserved</p>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        fetch('products.json')
+            .then(response => response.json())
+            .then(products => {
+                const product = products.find(p => p.id == productId);
+                const container = document.getElementById('product-details');
+
+                if (product) {
+                    container.innerHTML = `
+                        <img src="${product.image}" alt="${product.title}">
+                        <h2>${product.title}</h2>
+                        <p>${product.description}</p>
+                        <p><strong>Pris: ${product.price}</strong></p>
+                        <a href="payment.html" class="cool-button">Köp Nu</a>
+                    `;
+                } else {
+                    container.innerHTML = "<p>Produkten hittades inte.</p>";
+                }
+            });
+    </script>
+</body>
+</html>
