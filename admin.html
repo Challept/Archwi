@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Lägg till produkt</title>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
 </head>
 <body>
     <h1>Lägg till ny produkt</h1>
@@ -22,7 +20,11 @@
         <button type="submit">Lägg till produkt</button>
     </form>
 
-    <script>
+    <script type="module">
+        // Importera nödvändiga Firebase-funktioner
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+
         // Firebase-konfiguration
         const firebaseConfig = {
             apiKey: "AIzaSyDmvSG0MuU19gslEfEs6Mai8Waq3uvTI68",
@@ -35,30 +37,39 @@
         };
 
         // Initiera Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Funktion för att lägga till produkter
+        function addProduct(title, price, image, description, category) {
+            const productRef = ref(database, 'products');
+            const newProductRef = push(productRef);
+
+            set(newProductRef, {
+                title: title,
+                price: price,
+                image: image,
+                description: description,
+                category: category
+            }).then(() => {
+                console.log('Produkten har lagts till!');
+            }).catch((error) => {
+                console.error('Fel vid tilläggning av produkt:', error);
+            });
+        }
 
         // Hantera formulärets inskickning
         document.getElementById('productForm').addEventListener('submit', function (e) {
             e.preventDefault();
+            const title = document.getElementById('title').value;
+            const price = document.getElementById('price').value;
+            const image = document.getElementById('image').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
 
-            const newProduct = {
-                title: document.getElementById('title').value,
-                price: document.getElementById('price').value,
-                image: document.getElementById('image').value,
-                description: document.getElementById('description').value,
-                category: document.getElementById('category').value
-            };
-
-            // Skicka produkten till Firebase-databasen
-            database.ref('products').push(newProduct, (error) => {
-                if (error) {
-                    console.error('Fel vid tilläggning av produkt:', error);
-                } else {
-                    alert('Produkten har lagts till!');
-                    document.getElementById('productForm').reset();
-                }
-            });
+            addProduct(title, price, image, description, category);
+            alert('Produkten har lagts till!');
+            document.getElementById('productForm').reset();
         });
     </script>
 </body>
