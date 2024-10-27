@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betala med Swish</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Betala med Swish</h1>
+    </header>
+
+    <main>
+        <section class="payment-options">
+            <p>Välj betalningsmetod:</p>
+            <!-- Knapp för mobil -->
+            <a href="swish://payment?recipient=1234567890&amount=299&message=Betalning%20för%20Archwi-Tshirt" class="swish-button">Betala med Swish (Mobil)</a>
+            <!-- QR-kod för dator -->
+            <div id="qr-code">
+                <img src="qr-kod.png" alt="Skanna QR-koden för att betala med Swish">
+                <p>Skanna QR-koden med Swish-appen för att betala från dator</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Archwi - All rights reserved</p>
+    </footer>
+</body>
+</html>
