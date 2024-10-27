@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archwi - Kategori</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Archwi Produkter</h1>
+    </header>
+
+    <main>
+        <section id="product-list" class="product-list">
+            <h2>Produkter i kategorin</h2>
+            <div id="products-container"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 Archwi - All rights reserved</p>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+
+        fetch('products.json')
+            .then(response => response.json())
+            .then(products => {
+                const container = document.getElementById('products-container');
+                const filteredProducts = products.filter(product => product.category === category);
+
+                filteredProducts.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.title}">
+                        <h3>${product.title}</h3>
+                        <p>${product.price}</p>
+                        <a href="product.html?id=${product.id}">Visa produkt</a>
+                    `;
+                    container.appendChild(productCard);
+                });
+            });
+    </script>
+</body>
+</html>
