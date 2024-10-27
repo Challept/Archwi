@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produkter</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js"></script>
 </head>
 <body>
-    <h1>Produkter i kategorin</h1>
-    <div id="products-container"></div>
+    <header>
+        <h1>Produkter i kategorin</h1>
+    </header>
+    
+    <main>
+        <div id="products-container"></div>
+    </main>
 
-    <script>
+    <footer>
+        <p>© 2024 Archwi - All rights reserved</p>
+    </footer>
+
+    <script type="module">
+        // Importera nödvändiga Firebase-funktioner
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+
         // Firebase-konfiguration
         const firebaseConfig = {
             apiKey: "AIzaSyDmvSG0MuU19gslEfEs6Mai8Waq3uvTI68",
@@ -25,8 +36,8 @@
         };
 
         // Initiera Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
         // Hämta kategori från URL-parametrar
         const urlParams = new URLSearchParams(window.location.search);
@@ -34,12 +45,15 @@
 
         // Visa produkter från rätt kategori
         const productsContainer = document.getElementById('products-container');
-        database.ref('products').on('value', (snapshot) => {
+        const productRef = ref(database, 'products');
+
+        onValue(productRef, (snapshot) => {
             productsContainer.innerHTML = ''; // Rensa innehållet först
             snapshot.forEach((childSnapshot) => {
                 const product = childSnapshot.val();
                 if (product.category === category) {
                     const productCard = document.createElement('div');
+                    productCard.classList.add('product-card');
                     productCard.innerHTML = `
                         <h2>${product.title}</h2>
                         <p>Pris: ${product.price}</p>
